@@ -1,41 +1,40 @@
 import numpy
 
+def main():
+    d = int(input("How many dice would you like to roll?"))
+    a = int(input("What is your first sum"))
+    b = int(input("What is your second sum"))
+    print(sums(d,a,b))
 
-def function1(d,a,b):
+def sums(d,a,b):
     counterA = 0
     counterB = 0
-    counterA1 = 0
-    counterB1 = 0
     printStatement = " is more likely"
-    
-    for x in range(400):
-        for x in range(400):
-            alloutcomes = [] 
-            for x in range(d):
-                z = numpy.random.randint(1,7)
-                alloutcomes.append(z)
-                sum1 = sum(alloutcomes)
-            if a == sum1:
-                counterA += 1
-            if b == sum1:
 
-                counterB += 1
 
-        if counterA > counterB:
-            counterA1 += 1
-        elif counterA < counterB:
-            counterB1 += 1
+    for x in range(100000):
+        sum1 = 0
+        for x in range(d):
+            z = numpy.random.randint(1,7)
+            sum1 += z
+        if a == sum1:
+            counterA += 1
+        if b == sum1:
+            counterB += 1
 
-    if counterA1 > counterB1:
-        return str(a) + printStatement
-    elif counterB1 > counterA1:
+
+    probA = counterA/100000
+    probB = counterB/100000
+    difference = abs(probA - probB)
+    if difference < 1/(6**d):
+        return str(a) + " and " + str(b) + " are equally likely"
+    elif counterB > counterA:
         return str(b) + printStatement
     else:
-        function(d,a,b)
+        return str(a) + printStatement
 
-  
+
         
+main()
 
-    
-print(function1(3,11,12))
 
