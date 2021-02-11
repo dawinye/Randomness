@@ -26,6 +26,10 @@ def sums(d,a,b):
     probA = counterA/100000
     probB = counterB/100000
     difference = abs(probA - probB)
+    # 1/(6**d) represents the probability of each outcome. To make sure that this program catches 
+    # values that are supposed to be equally likely (i.e. sums of 6 and 8 with 2 dice), the difference
+    # between the probabilities of the two counters must be lower than this fraction. 
+
     if difference < 1/(6**d):
         return str(a) + " and " + str(b) + " are equally likely"
     elif counterB > counterA:
