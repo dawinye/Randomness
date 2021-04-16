@@ -1,0 +1,120 @@
+import random
+import numpy
+
+def top_to_random(l):
+    k = random.randint(1,len(l))
+    l.insert(k, l[0])
+    l.pop(0)
+    return l
+
+
+#DID NOT USE
+#tried using the second method by flipping a fair coin n times, to determine for each position of the shuffled
+#deck whether it came from the left or right. Then cut into two packets whose sizes
+#are the number of tails and the number of heads flipped, and use the same coin
+#flip sequence to determine from which packet to pull each card of the shuffled
+#deck.
+def gsr(l):
+    lenlist = len(l)
+    listleft = []
+    listright = []
+    for y in range(0,lenlist):
+        a = random.randint(0,1)
+        if a == 0:
+            listleft.append(l.pop(0))
+        elif a == 1:
+            listright.append(l.pop(0))
+    
+    
+    for y in range(0,lenlist):
+        a = random.randint(0,1)
+        if a == 0:
+            if len(listleft) == 0:
+                l.append(listright.pop(len(listright)-1))
+            else:
+                l.append(listleft.pop(len(listleft)-1))
+        elif a == 1:
+            if len(listright) == 0:
+                l.append(listleft.pop(len(listleft)-1))
+            else:
+                l.append(listright.pop(len(listright)-1))
+    return l
+
+
+#first method in the assignment
+#Cut the deck such that the probability of grabbing k of the n cards with your left
+##hand is (n choose k)/2**n. Then, move one card at a time, repeatedly, from the bottom of
+##one hand to the top of the shuffled deck, such that if l cards remain on your left
+##and r cards remain on your right, then the probability of choosing a card from
+##your left is l/(l + r) and the probability of choosing a card from your right is
+##r/(l + r). In other words, at any moment during the riffle, the probability that
+##the card against your left thumb is the next to fall equals the proportion of the
+##not-yet-fallen cards which are in your left hand.
+
+
+def gsr2(l):
+    lengthlist = len(l)
+    leftlist = []
+    rightlist = []
+    a = numpy.random.binomial(len(l),0.5,size= None)
+    for i in range(0,a):
+        leftlist.append(l.pop(0))
+    for i in range(0,len(l)):
+        rightlist.append(l.pop(0))
+    for i in range(0,lengthlist):
+        probleft = len(leftlist)/(len(leftlist)+len(rightlist))
+        b = numpy.random.binomial(1,probleft,size= None)
+        if b == 1:
+            if probleft == 0:
+                l.append(rightlist.pop(0))
+            else:
+                l.append(leftlist.pop(0))
+        else:
+            if probleft == 1:
+                l.append(leftlist.pop(0))
+            else:
+                l.append(rightlist.pop(0))
+
+
+    return l
+            
+    
+
+
+def test_order(i,j,l):
+    for k in range(0,len(l)):
+        if l[k] == i:
+            return i
+        if l[k] == j:
+            return j
+
+
+def montecarlo(i,j,n,shuffles,l):
+    lcopy = l.copy()
+    counteri = 0
+    counterj = 0
+    for v in range(0,n):
+        for p in range(0,shuffles):
+            #comment out one of these to test the other one
+            top_to_random(l)
+            #gsr2(l)
+            
+        a = test_order(i,j,l)
+        l = lcopy.copy()
+        if a == i:
+            counteri += 1
+            continue
+        elif a == j:
+            counterj += 1
+            continue
+        else:
+            print("error")
+        
+    return counteri/(counteri + counterj), counterj/(counteri + counterj)
+    
+
+        
+mylist = list(range(0,10))
+
+
+print(montecarlo(0,6,100000,4,mylist))
