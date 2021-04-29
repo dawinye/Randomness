@@ -8,39 +8,6 @@ def top_to_random(l):
     return l
 
 
-#DID NOT USE
-#tried using the second method by flipping a fair coin n times, to determine for each position of the shuffled
-#deck whether it came from the left or right. Then cut into two packets whose sizes
-#are the number of tails and the number of heads flipped, and use the same coin
-#flip sequence to determine from which packet to pull each card of the shuffled
-#deck.
-def gsr(l):
-    lenlist = len(l)
-    listleft = []
-    listright = []
-    for y in range(0,lenlist):
-        a = random.randint(0,1)
-        if a == 0:
-            listleft.append(l.pop(0))
-        elif a == 1:
-            listright.append(l.pop(0))
-    
-    
-    for y in range(0,lenlist):
-        a = random.randint(0,1)
-        if a == 0:
-            if len(listleft) == 0:
-                l.append(listright.pop(len(listright)-1))
-            else:
-                l.append(listleft.pop(len(listleft)-1))
-        elif a == 1:
-            if len(listright) == 0:
-                l.append(listleft.pop(len(listleft)-1))
-            else:
-                l.append(listright.pop(len(listright)-1))
-    return l
-
-
 #first method in the assignment
 #Cut the deck such that the probability of grabbing k of the n cards with your left
 ##hand is (n choose k)/2**n. Then, move one card at a time, repeatedly, from the bottom of
@@ -52,7 +19,7 @@ def gsr(l):
 ##not-yet-fallen cards which are in your left hand.
 
 
-def gsr2(l):
+def gsr(l):
     lengthlist = len(l)
     leftlist = []
     rightlist = []
@@ -97,7 +64,7 @@ def montecarlo(i,j,n,shuffles,l):
         for p in range(0,shuffles):
             #comment out one of these to test the other one
             top_to_random(l)
-            #gsr2(l)
+            #gsr(l)
             
         a = test_order(i,j,l)
         l = lcopy.copy()
