@@ -116,5 +116,5 @@ def montecarlo(i,j,n,shuffles,l):
         
 mylist = list(range(0,10))
 
-
-print(montecarlo(0,6,100000,4,mylist))
+#50000 is chosen by solving for n in (.25)/(n*(0.01**2)) <= 0.05
+print(montecarlo(0,6,50000,4,mylist))
